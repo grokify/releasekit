@@ -38,7 +38,7 @@ func (r *realRunner) Run(ctx context.Context, cmd Command) *Result {
 		}
 	}
 
-	c := exec.CommandContext(ctx, cmd.Args[0], cmd.Args[1:]...)
+	c := exec.CommandContext(ctx, cmd.Args[0], cmd.Args[1:]...) //nolint:gosec // G204: intentional command execution - this is the core runner functionality
 	if cmd.Dir != "" {
 		c.Dir = cmd.Dir
 	}

@@ -1,0 +1,595 @@
+{
+  "ir_version": "1.0",
+  "project": "ReleaseKit",
+  "repository": "https://github.com/grokify/releasekit",
+
+  "areas": [
+    {"id": "run", "name": "Command Execution", "priority": 1},
+    {"id": "git", "name": "Git Operations", "priority": 2},
+    {"id": "commits", "name": "Commit Analysis", "priority": 3},
+    {"id": "checks", "name": "Validation Checks", "priority": 4},
+    {"id": "detect", "name": "Language Detection", "priority": 5},
+    {"id": "workflow", "name": "Workflow", "priority": 6},
+    {"id": "output", "name": "Output", "priority": 7},
+    {"id": "cli", "name": "CLI", "priority": 8},
+    {"id": "integration", "name": "Integration", "priority": 9}
+  ],
+
+  "phases": [
+    {
+      "id": "v0.1",
+      "name": "v0.1.0 - Core Git Operations & Release Status",
+      "status": "planned",
+      "order": 1,
+      "description": "Foundation with command execution layer, git operations library, commit analysis, and CLI status commands"
+    },
+    {
+      "id": "v0.2",
+      "name": "v0.2.0 - Validation Checks & Language Detection",
+      "status": "planned",
+      "order": 2,
+      "description": "Pre-push validation framework with multi-language support"
+    },
+    {
+      "id": "v0.3",
+      "name": "v0.3.0 - Release Workflow & Downstream Integration",
+      "status": "planned",
+      "order": 3,
+      "description": "Automated release workflow and migration of downstream projects"
+    }
+  ],
+
+  "items": [
+    {
+      "id": "run-command-types",
+      "title": "Command and Result types",
+      "description": "Core types for representing executable commands and their outcomes (exit code, stdout, stderr, duration)",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "run",
+      "type": "Added",
+      "priority": "critical"
+    },
+    {
+      "id": "run-runner-interface",
+      "title": "Runner interface with real executor",
+      "description": "Runner interface for command execution with a real implementation using os/exec, supporting context cancellation and per-command timeouts",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "run",
+      "type": "Added",
+      "priority": "critical",
+      "depends_on": ["run-command-types"]
+    },
+    {
+      "id": "run-dry-runner",
+      "title": "DryRunner for preview mode",
+      "description": "Runner implementation that records commands without executing them, enabling dry-run previews for workflows and checks",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "run",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["run-runner-interface"]
+    },
+    {
+      "id": "run-recording-runner",
+      "title": "RecordingRunner for audit trails",
+      "description": "Runner wrapper that executes commands via an inner runner while recording all commands and results for audit/replay",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "run",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["run-runner-interface"]
+    },
+    {
+      "id": "run-helpers",
+      "title": "Command constructor helpers (Git, Go, Shell)",
+      "description": "Helper functions for constructing Command values for common tools: run.Git(dir, args...), run.Go(dir, args...), run.Shell(dir, args...)",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "run",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["run-command-types"]
+    },
+    {
+      "id": "run-batch",
+      "title": "RunAll and RunSet for batch execution",
+      "description": "Execute multiple commands sequentially with stop-on-fail option, returning a RunSet with pass/fail summary",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "run",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["run-runner-interface"]
+    },
+    {
+      "id": "git-repo-type",
+      "title": "Repo type with configurable working directory and Runner",
+      "description": "Core abstraction for executing git commands in a specific directory, using run.Runner for all command execution",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "git",
+      "type": "Added",
+      "priority": "critical",
+      "depends_on": ["run-runner-interface", "run-helpers"]
+    },
+    {
+      "id": "git-tags",
+      "title": "Tag listing with prefix filtering and version sorting",
+      "description": "List, create, verify, and delete tags with support for nested module prefixes (e.g., sdk/go/v0.1.0)",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "git",
+      "type": "Added",
+      "priority": "critical",
+      "depends_on": ["git-repo-type"]
+    },
+    {
+      "id": "git-log",
+      "title": "Commit log with range queries",
+      "description": "Execute git log with since/until refs, last N, path filtering, and numstat",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "git",
+      "type": "Added",
+      "priority": "critical",
+      "depends_on": ["git-repo-type"]
+    },
+    {
+      "id": "git-status",
+      "title": "Working tree status",
+      "description": "Parse staged, unstaged, and untracked file state",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "git",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["git-repo-type"]
+    },
+    {
+      "id": "git-remote",
+      "title": "Remote URL parsing",
+      "description": "Parse SSH and HTTPS remote URLs into owner/repo structure, normalize to HTTPS",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "git",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["git-repo-type"]
+    },
+    {
+      "id": "git-branch",
+      "title": "Branch ahead/behind tracking",
+      "description": "Detect branch tracking state relative to remote",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "git",
+      "type": "Added",
+      "priority": "medium",
+      "depends_on": ["git-repo-type"]
+    },
+    {
+      "id": "commits-conventional",
+      "title": "Conventional commit parser",
+      "description": "Regex-based parsing of type(scope)!: subject with breaking change detection",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "commits",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "commits-category",
+      "title": "Category suggestion with confidence scoring",
+      "description": "Map conventional commit types to changelog categories with confidence levels",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "commits",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["commits-conventional"]
+    },
+    {
+      "id": "commits-refs",
+      "title": "Issue/PR reference extraction",
+      "description": "Extract #123 and (#456) references from commit messages",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "commits",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "output-toon",
+      "title": "TOON formatter",
+      "description": "Token-optimized output format for LLM consumption (~8x more efficient than raw git)",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "output",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "output-json",
+      "title": "JSON formatter",
+      "description": "Structured JSON output for programmatic use",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "output",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "output-text",
+      "title": "Text formatter",
+      "description": "Human-readable terminal output",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "output",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "cli-status",
+      "title": "`releasekit status` command",
+      "description": "Show latest tag, commits since, uncommitted changes in one invocation. Replaces 5+ manual git commands.",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "cli",
+      "type": "Added",
+      "priority": "critical",
+      "depends_on": ["git-tags", "git-log", "git-status"],
+      "tasks": [
+        {"description": "Show latest tag and commit it points to", "completed": false},
+        {"description": "List commits since last tag with conventional commit parsing", "completed": false},
+        {"description": "Show uncommitted changes summary", "completed": false},
+        {"description": "Support --path for nested module prefix", "completed": false},
+        {"description": "Show suggested next version based on commit types", "completed": false},
+        {"description": "TOON output by default", "completed": false}
+      ]
+    },
+    {
+      "id": "cli-check",
+      "title": "`releasekit check` command",
+      "description": "Validate version consistency between tags and CHANGELOG.json entries",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "cli",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["git-tags"],
+      "tasks": [
+        {"description": "Compare tags against CHANGELOG.json versions", "completed": false},
+        {"description": "Detect version mismatches (changelog vs actual tags)", "completed": false},
+        {"description": "Detect tags with no corresponding CHANGELOG entry (backfill detection)", "completed": false},
+        {"description": "Validate semver format", "completed": false}
+      ]
+    },
+    {
+      "id": "cli-modules",
+      "title": "`releasekit modules` command",
+      "description": "Show status of all Go submodules in a repo with per-module tag and delta",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "cli",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["git-tags", "git-log"],
+      "tasks": [
+        {"description": "Detect Go submodules (go.mod files)", "completed": false},
+        {"description": "Show per-module latest tag and commits since", "completed": false},
+        {"description": "Show per-module uncommitted changes", "completed": false}
+      ]
+    },
+    {
+      "id": "cli-commits",
+      "title": "`releasekit commits` command",
+      "description": "Parse commits in a range with conventional commit analysis and category suggestions",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "cli",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["git-log", "commits-conventional", "commits-category"],
+      "tasks": [
+        {"description": "Support --since, --until, --last, --path flags", "completed": false},
+        {"description": "Category suggestions per commit", "completed": false},
+        {"description": "Summary statistics by type", "completed": false}
+      ]
+    },
+    {
+      "id": "version-suggest",
+      "title": "Suggested next version",
+      "description": "Compute next semver based on conventional commits since last tag (feat → minor, fix → patch, BREAKING CHANGE → major)",
+      "status": "planned",
+      "target_version": "0.1.0",
+      "phase": "v0.1",
+      "area": "commits",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["git-tags", "commits-conventional"]
+    },
+    {
+      "id": "detect-go",
+      "title": "Detect Go projects",
+      "description": "Detect Go by presence of go.mod",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "detect",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "detect-typescript",
+      "title": "Detect TypeScript/JavaScript projects",
+      "description": "Detect TypeScript (tsconfig.json + package.json) and JavaScript (package.json only)",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "detect",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "detect-python",
+      "title": "Detect Python projects",
+      "description": "Detect Python by pyproject.toml, setup.py, or requirements.txt",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "detect",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "detect-rust",
+      "title": "Detect Rust projects",
+      "description": "Detect Rust by Cargo.toml",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "detect",
+      "type": "Added",
+      "priority": "low"
+    },
+    {
+      "id": "detect-monorepo",
+      "title": "Monorepo support",
+      "description": "Detect multiple languages in subdirectories",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "detect",
+      "type": "Added",
+      "priority": "medium",
+      "depends_on": ["detect-go", "detect-typescript", "detect-python"]
+    },
+    {
+      "id": "checks-interface",
+      "title": "Checker interface with Result type and Commands introspection",
+      "description": "Pluggable validation framework with pass/fail/warn/skip outcomes. Checkers accept run.Runner and expose Commands() for dry-run previews.",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "checks",
+      "type": "Added",
+      "priority": "critical",
+      "depends_on": ["run-runner-interface", "run-batch"]
+    },
+    {
+      "id": "checks-go",
+      "title": "Go checker",
+      "description": "Build, test, lint, format, mod tidy, no local replace directives",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "checks",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["checks-interface"]
+    },
+    {
+      "id": "checks-typescript",
+      "title": "TypeScript checker",
+      "description": "eslint, prettier, tsc, npm test",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "checks",
+      "type": "Added",
+      "priority": "medium",
+      "depends_on": ["checks-interface"]
+    },
+    {
+      "id": "checks-release",
+      "title": "Release readiness checker",
+      "description": "Version format, tag availability, clean working tree",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "checks",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["checks-interface", "git-tags", "git-status"]
+    },
+    {
+      "id": "git-ci",
+      "title": "CI status via GitHub CLI",
+      "description": "Check GitHub Actions status, poll with timeout, pass/fail/pending reporting",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "git",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["git-remote"]
+    },
+    {
+      "id": "cli-validate",
+      "title": "`releasekit validate` command",
+      "description": "Auto-detect language and run appropriate checks. Supports --dry-run to preview commands via DryRunner without executing.",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "cli",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["checks-interface", "detect-go", "run-dry-runner"]
+    },
+    {
+      "id": "modules-tag",
+      "title": "Multi-module coordinated tagging",
+      "description": "Push multiple tags (root + nested modules) for the same commit in a single coordinated release",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "cli",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["cli-modules", "git-ci"],
+      "tasks": [
+        {"description": "Detect which modules have changes since their last tag", "completed": false},
+        {"description": "Suggest version bumps per module based on commit types", "completed": false},
+        {"description": "Create and push multiple tags atomically", "completed": false},
+        {"description": "Support --dry-run to preview tag plan", "completed": false}
+      ]
+    },
+    {
+      "id": "workflow-engine",
+      "title": "Step-based workflow engine with Runner integration",
+      "description": "Context propagation, error handling, step sequencing. Steps define Commands for preview and execute via run.Runner for automatic dry-run and audit support.",
+      "status": "planned",
+      "target_version": "0.3.0",
+      "phase": "v0.3",
+      "area": "workflow",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["run-runner-interface", "run-dry-runner"]
+    },
+    {
+      "id": "workflow-release",
+      "title": "Standard release workflow",
+      "description": "Validate, commit, push, wait CI, tag — with dry-run and interactive modes",
+      "status": "planned",
+      "target_version": "0.3.0",
+      "phase": "v0.3",
+      "area": "workflow",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["workflow-engine", "checks-interface", "git-ci"]
+    },
+    {
+      "id": "changelog-hooks",
+      "title": "Changelog integration hooks",
+      "description": "Interface for schangelog validate/generate, commit-to-entry mapping",
+      "status": "planned",
+      "target_version": "0.3.0",
+      "phase": "v0.3",
+      "area": "integration",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "migrate-schangelog",
+      "title": "Migrate structured-changelog to use releasekit",
+      "description": "Replace gitlog/ and git execution code with releasekit/git and releasekit/commits imports",
+      "status": "planned",
+      "target_version": "0.3.0",
+      "phase": "v0.3",
+      "area": "integration",
+      "type": "Changed",
+      "priority": "high",
+      "depends_on": ["git-log", "commits-conventional"]
+    },
+    {
+      "id": "migrate-release-agent",
+      "title": "Migrate release-agent-team to use releasekit",
+      "description": "Replace pkg/git/, pkg/checks/, pkg/detect/ with releasekit imports",
+      "status": "planned",
+      "target_version": "0.3.0",
+      "phase": "v0.3",
+      "area": "integration",
+      "type": "Changed",
+      "priority": "high",
+      "depends_on": ["git-repo-type", "checks-interface", "detect-go"]
+    },
+    {
+      "id": "cli-release",
+      "title": "`releasekit release` command",
+      "description": "Execute full release workflow with --dry-run, --interactive, and --path support",
+      "status": "planned",
+      "target_version": "0.3.0",
+      "phase": "v0.3",
+      "area": "cli",
+      "type": "Added",
+      "priority": "high",
+      "depends_on": ["workflow-release"]
+    }
+  ],
+
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "order": 1,
+      "content": [
+        {"type": "text", "value": "ReleaseKit provides two interfaces to the same release management functionality: a Go library for programmatic integration (used by schangelog, release-agent-team, and custom tooling) and a CLI for agents, CI pipelines, and humans. All logic lives in the library; the CLI is a thin wrapper (parse flags → call library → format output → exit). A shared command execution layer (run/) unifies all external commands (git, go, ls, gh, linters) with automatic dry-run, timeout, and audit trail support."}
+      ]
+    },
+    {
+      "id": "relationships",
+      "title": "Related Projects",
+      "order": 98,
+      "content": [
+        {"type": "list", "items": [
+          "[structured-changelog](https://github.com/grokify/structured-changelog) - Imports releasekit for git operations",
+          "[release-agent-team](https://github.com/agentplexus/release-agent-team) - Imports releasekit for git, checks, detect",
+          "[releasehub](https://github.com/grokify/releasehub) - Orchestrates releasekit across multiple repos"
+        ]}
+      ]
+    },
+    {
+      "id": "references",
+      "title": "References",
+      "order": 99,
+      "content": [
+        {"type": "list", "items": [
+          "[PRD.md](PRD.md) - Product requirements",
+          "[TRD.md](TRD.md) - Technical requirements"
+        ]}
+      ]
+    }
+  ],
+
+  "version_history": [
+    {"version": "0.1.0", "date": null, "status": "planned", "summary": "Command execution layer, core git operations, commit analysis, and CLI status commands"},
+    {"version": "0.2.0", "date": null, "status": "planned", "summary": "Validation checks and language detection"},
+    {"version": "0.3.0", "date": null, "status": "planned", "summary": "Release workflow and downstream migration"}
+  ]
+}

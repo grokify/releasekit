@@ -1,0 +1,35 @@
+{
+  "ir_version": "1.0",
+  "project": "releasekit",
+  "repository": "https://github.com/grokify/releasekit",
+  "versioning": "semver",
+  "commit_convention": "conventional",
+  "maintainers": ["grokify", "johncwang@gmail.com"],
+  "releases": [
+    {
+      "version": "v0.1.0",
+      "date": "2026-01-26",
+      "highlights": [
+        { "description": "Initial release of releasekit: release management toolkit for Go projects", "commit": "3caf487" }
+      ],
+      "added": [
+        { "description": "releasekit CLI with validate, check, commits, status, modules commands", "commit": "3caf487" },
+        { "description": "Language auto-detection for Go, TypeScript, JavaScript, Python, Rust", "commit": "3caf487" },
+        { "description": "Pre-release validation framework with pluggable checkers", "commit": "3caf487" },
+        { "description": "Go checker: build, test, lint (golangci-lint), mod tidy, coverage", "commit": "3caf487" },
+        { "description": "TypeScript/JavaScript checker: build, test, lint via npm/yarn", "commit": "3caf487" },
+        { "description": "Git operations: tag management, branch analysis, remote handling", "commit": "3caf487" },
+        { "description": "Conventional commit parsing and categorization", "commit": "3caf487" },
+        { "description": "Multi-agent-spec AgentResult output format for agent workflow interoperability", "commit": "3caf487" },
+        { "description": "Multiple output formats: TOON (default), JSON, text", "commit": "3caf487" },
+        { "description": "Dry-run mode for previewing validation commands", "commit": "3caf487" },
+        { "description": "Recording runner for audit trails", "commit": "3caf487" }
+      ],
+      "dependencies": [
+        { "description": "github.com/agentplexus/multi-agent-spec/sdk/go v0.5.0 for AgentResult schema", "commit": "3caf487" },
+        { "description": "github.com/spf13/cobra v1.10.2 for CLI framework", "commit": "3caf487" },
+        { "description": "github.com/toon-format/toon-go for TOON output format", "commit": "3caf487" }
+      ]
+    }
+  ]
+}

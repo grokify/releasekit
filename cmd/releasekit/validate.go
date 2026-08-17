@@ -103,7 +103,7 @@ func runValidate(cmd *cobra.Command, args []string) error {
 		case detect.Go:
 			checker = &checks.GoChecker{Opts: opts}
 		case detect.TypeScript, detect.JavaScript:
-			checker = &checks.TypeScriptChecker{Opts: opts}
+			checker = &checks.TypeScriptChecker{Opts: opts, Language: d.Language}
 		default:
 			continue
 		}

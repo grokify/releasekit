@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	multiagentspec "github.com/agentplexus/multi-agent-spec/sdk/go"
+	multiagentspec "github.com/plexusone/multi-agent-spec/sdk/go"
 	"github.com/spf13/cobra"
 
 	"github.com/grokify/releasekit/checks"
@@ -124,7 +124,7 @@ func runValidate(cmd *cobra.Command, args []string) error {
 
 	// Build AgentResult
 	agentResult := multiagentspec.AgentResult{
-		Schema:     "https://raw.githubusercontent.com/agentplexus/multi-agent-spec/main/schema/report/agent-result.schema.json",
+		Schema:     "https://raw.githubusercontent.com/plexusone/multi-agent-spec/main/schema/report/agent-result.schema.json",
 		AgentID:    "language-validation",
 		StepID:     "releasekit-validate",
 		Tasks:      allTasks,

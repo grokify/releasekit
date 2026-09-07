@@ -3,7 +3,7 @@ module github.com/grokify/releasekit
 go 1.25.0
 
 require (
-	github.com/plexusone/multi-agent-spec v0.9.0
+	github.com/plexusone/multi-agent-spec v0.10.0
 	github.com/spf13/cobra v1.10.2
 	github.com/toon-format/toon-go v0.0.0-20251202084852-7ca0e27c4e8c
 )
